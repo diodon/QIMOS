@@ -1,2 +1,2 @@
 # QIMOS
-QIMOS studd and tools
+QIMOS stuff and tools
