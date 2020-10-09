@@ -1,11 +1,21 @@
 ## Get time series from gridded
 library(ncdf4)
 
-getGriddedFileName = function(site){
+getGriddedFileName = function(site, webURL="S3"){
+  ## webURL S3 -> amazon S3 prefix, opendap -> AODN OPeNDAP, wget -> AODN HTML THREDDS server
+  if (webURL == "opendap"){ 
+    WEBROOT = 'http://thredds.aodn.org.au/thredds/dodsC/'
+  }else if (webURL == "wget"){
+      WEBROOT = 'http://thredds.aodn.org.au/thredds/fileServer/'
+  }else {
+      WEBROOT = 'https://s3-ap-southeast-2.amazon.com/imos-data/'
+  }
+    
   urlGeoServer = paste0("http://geoserver-123.aodn.org.au/geoserver/ows?typeName=moorings_all_map&SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&outputFormat=csv&CQL_FILTER=(realtime='FALSE')and(site_code='", site, "')")
   df = read.csv(url(urlGeoServer))
   fileName = df$url[grepl("gridded_timeseries", df$url)]
-  return(fileName)
+  return(paste0(WEBROOT,fileName))
+  
 }
 
 
