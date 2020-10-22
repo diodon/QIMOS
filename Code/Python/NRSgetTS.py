@@ -3,6 +3,7 @@
 
 import os
 from datetime import date
+from itertools import groupby
 import argparse
 import numpy as np
 import pandas as pd
@@ -13,13 +14,33 @@ pd.options.display.max_colwidth = 200
 def args():
     parser = argparse.ArgumentParser(description="Get a TEMP timeseries from the gridded product at specified DEPTH")
     parser.add_argument('-site', dest='site', help='site code, like NRMMAI',  type=str, default=None, required=True)
-    parser.add_argument('-depth', dest='depth', help='selecyted depth, like 10',  type=float, default=None, required=True)
+    parser.add_argument('-depth', dest='depth', help='selected depth, like 10',  type=float, default=None, required=True)
     parser.add_argument('-ts', dest='dateStart', help='start time like 2015-12-01', default=None, type=str, required=False)
     parser.add_argument('-te', dest='dateEnd', help='end time like 2018-06-30', type=str, default=None, required=False)
     #parser.add_argument('-i', '--info', dest='info', help='display file info ONLY', type=bool, default=False, required=False)
 
     vargs = parser.parse_args()
     return(vargs)
+
+
+
+def blockPlot(x, lineLength = 80):
+    '''
+    Print a line block-plot of data availability of specified length
+    E. Klein. ekleins@gmail.com 2020-10-20
+    :param x: numpy array of dim 1
+    :param lineLength: lenght of the line plot
+    :return: string
+    '''
+    blockSymbols = ['\u2591', '\u2593']
+    ## make boolean vector 0-nodata 1-data
+    x_bool = np.isnan(x.values).astype(int).tolist()
+    ## run-length encoder
+    x_rle = [[key, len(list(group))] for key, group in groupby(x_bool)]
+    ## list of number of symbols
+    x_sum = sum(x[1] for x in x_rle)
+    x_symbols = list(round(lineLength * x[1]/x_sum) for x in x_rle)
+    return''.join(list(blockSymbols[x_rle[i][0]] * x_symbols[i] for i in range(len(x_rle))))
 
 
 
@@ -72,6 +93,7 @@ def NRSgetTS(site, depth, dateStart='1970-01-01', dateEnd=date.today()):
     print('Max DEPTH: ' + str(nc.geospatial_vertical_max))
     print('Included DEPTHS: ' + str(depthList))
 
+
     if info:
         return
 
@@ -80,12 +102,12 @@ def NRSgetTS(site, depth, dateStart='1970-01-01', dateEnd=date.today()):
     temp = nc.TEMP.sel(DEPTH=float(depth))
 
     ## save csv
-    fileNameCSV = "_".join([site, 'TEMP', (str(depth)+'m'),
+    fileNameCSV = "_".join([site, 'TEMP', (str(int(depth))+'m'),
                             (str.split(nc.time_coverage_start, "T")[0].replace("-","") + "-" +
                              str.split(nc.time_coverage_end, "T")[0].replace("-","")),]) + '.csv'
     temp.to_series().to_csv(fileNameCSV)
 
-
+    print('Data availabilty', blockPlot(temp))
     print("Output file: " + fileNameCSV)
 
     return
