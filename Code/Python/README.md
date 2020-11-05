@@ -2,6 +2,23 @@
 
 Set of functions to extract information and data from AODN ANMN gridded product
 
+## Get gridded LTSP information
+
+Print a table of basic information about the gridded product. Just pass the site code.
+
+`infoLTSP.py`
+
+```
+usage: infoLTSP.py [-h] -site SITE
+
+Produce information about LTSP gridded product
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -site SITE  site code, like NRMMAI
+
+```
+
 ## Extract temperature timeseries at depth
 
 `NRSgetTS.py`
