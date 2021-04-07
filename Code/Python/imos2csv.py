@@ -25,6 +25,8 @@ def imos2csv(fileName, output_path):
                 ff.write('%s\n' %item)
 
         df = nc.to_dataframe()
+        df['source_file'] = df['source_file'].str.decode('utf-8')
+        df['instrument_id'] = df['instrument_id'].str.decode('utf-8')
         df.to_csv(fileNameCSV, sep='\t', index=False, mode='a')
 
     return [fileNameCSV, len(metadata)]
@@ -33,9 +35,9 @@ def imos2csv(fileName, output_path):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Convert IMOS hourly LTSP to tab separated file with metadata on top")
-    parser.add_argument('-file', dest='fileName', help='name of hourly netCDF LTSP', required=True)
-    parser.add_argument('-path', dest='output_path', help='path where the result file will be written. Default ./',
-                        default='./', required=False)
+    parser.add_argument('-file', dest='fileName', help="name of hourly netCDF LTSP", required=True)
+    parser.add_argument('-path', dest='output_path', help="path where the result file will be written. Default ./",
+                        default="./", required=False)
     args = parser.parse_args()
     result = imos2csv(args.fileName, args.output_path)
     print('CONVERSION DONE!')
