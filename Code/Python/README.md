@@ -70,3 +70,23 @@ optional arguments:
                         thredds -> AODN HTML THREDDS server
 
 ```
+
+## Convert an hourly aggregated time series file into a tab-separated file with metadata on top
+
+This small script will convert any IMOS hourly aggregated netCDF file to a tab separated file. The metadata extracted from the file global attributes is at the top. 
+The missing value for all the variables is set to -99999.
+The run will return the TSV file name, the lines corresponding the metadata and the start line of the data.
+
+`imos2csv.py`
+
+```
+usage: imos2csv.py [-h] -file FILENAME [-path OUTPUT_PATH]
+
+Convert IMOS hourly LTSP to tab separated file with metadata on top
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -file FILENAME     name of hourly netCDF LTSP
+  -path OUTPUT_PATH  path where the result file will be written. Default ./
+```
+
