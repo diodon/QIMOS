@@ -28,10 +28,13 @@ def imos2csv(fileName, param, startDate, endDate, output_path='./'):
 
     with xr.open_dataset(fileName) as nc:
         siteCode = nc.site_code
-        dateStart = fileName.split("/")[-1].split("_")[3]
-        dateEnd = fileName.split("/")[-1].split("_")[7].replace('END','')
-        fileNameCSV = os.path.join(output_path, "_".join([siteCode, dateStart+dateEnd])+'.csv')
+        dateStart = startDate.replace("-", "")
+        dateEnd = endDate.replace("-", "")
+        fileNameCSV = os.path.join(output_path, "_".join([siteCode, (dateStart+'-'+dateEnd)])+'.csv')
 
+        ## update and save attrs
+        nc.attrs['time_coverage_start'] = startDate
+        nc.attrs['time_coverage_end'] = endDate
         attNames = list(nc.attrs.keys())
         attNames = [item + ': ' for item in attNames]
         attValues = list(nc.attrs.values())
