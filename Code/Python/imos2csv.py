@@ -21,15 +21,17 @@ def imos2csv(fileName, param, startDate, endDate, output_path='./'):
     :return:
     '''
 
-
+    ## for file name
+    dateStart = startDate.replace("-", "")
+    dateEnd = endDate.replace("-", "")
+    #for filtering
     startDate = np.datetime64(startDate)
     endDate = np.datetime64(endDate)
     print(param)
 
     with xr.open_dataset(fileName) as nc:
+        ## file name
         siteCode = nc.site_code
-        dateStart = startDate.replace("-", "")
-        dateEnd = endDate.replace("-", "")
         fileNameCSV = os.path.join(output_path, "_".join([siteCode, (dateStart+'-'+dateEnd)])+'.csv')
 
         ## update and save attrs
