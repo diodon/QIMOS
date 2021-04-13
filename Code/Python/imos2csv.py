@@ -1,11 +1,31 @@
 ## transform IMOS LTSP netCDF to cvs, with metadata on the top
 import argparse
 import os
+import sys
+
 import xarray as xr
 import pandas as pd
+import numpy as np
 
 
-def imos2csv(fileName, output_path):
+def imos2csv(fileName, param, startDate, endDate, output_path='./'):
+    '''
+    Extract variables from hourly aggregated LTSP between two dates
+    and save it ina csv file with metadata on top
+    E. Klein. eklein at ocean-analytics.com.au
+    :param fileName: name of the hourly aggregate netCDF file
+    :param param: list of parameter to extract
+    :param startDate: start date YYYY-MM-DD
+    :param endDate: end date YYYY-MM-DD
+    :param output_path: path where to wrtie the resulting file
+    :return:
+    '''
+
+
+    startDate = np.datetime64(startDate)
+    endDate = np.datetime64(endDate)
+    print(param)
+
     with xr.open_dataset(fileName) as nc:
         siteCode = nc.site_code
         dateStart = fileName.split("/")[-1].split("_")[3]
@@ -24,8 +44,13 @@ def imos2csv(fileName, output_path):
             for item in metadata:
                 ff.write('%s\n' %item)
 
+        ## select parameter and date range
+        selectedParam = ['instrument_index', 'instrument_id', 'TIME', 'DEPTH']
+        [selectedParam.append(item) for item in param]
+        nc = nc[selectedParam]
+        nc = nc.drop(['LATITUDE', 'LONGITUDE', 'NOMINAL_DEPTH'])
+        nc = nc.where((nc.TIME>=startDate) & (nc.TIME<=endDate), drop=True)
         df = nc.to_dataframe()
-        df['source_file'] = df['source_file'].str.decode('utf-8')
         df['instrument_id'] = df['instrument_id'].str.decode('utf-8')
         df.to_csv(fileNameCSV, sep='\t', index=False, mode='a')
 
@@ -36,10 +61,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Convert IMOS hourly LTSP to tab separated file with metadata on top")
     parser.add_argument('-file', dest='fileName', help="name of hourly netCDF LTSP", required=True)
+    parser.add_argument('-param', dest='param', help="parameter to extract. Default TEMP", nargs='+', default='TEMP', required=True)
+    parser.add_argument('-ds', dest='startDate', help="start date in YYYY-MM-DD", required=True)
+    parser.add_argument('-de', dest='endDate', help="end date in YYYY-MM-DD", required=True)
     parser.add_argument('-path', dest='output_path', help="path where the result file will be written. Default ./",
                         default="./", required=False)
     args = parser.parse_args()
-    result = imos2csv(args.fileName, args.output_path)
+    result = imos2csv(args.fileName, args.param, args.startDate, args.endDate, args.output_path)
     print('CONVERSION DONE!')
     print('TSV file name: ' + result[0])
     print('metadata from line 1 thru line ' + str(result[1]))
