@@ -71,9 +71,34 @@ optional arguments:
 
 ```
 
+## get the file name of the LTSP
+
+it returns the url of the LTSP product for remote open (opendap) or download (wget or Amazon S3)
+
+`getLTSPname.py`
+
+```
+usage: getLTSPname.py [-h] -site SITE -product PRODUCT [-QC QC] [-param PARAM]
+                      [-weburl WEBURL]
+
+Get LTSP file name
+
+optional arguments:
+  -h, --help        show this help message and exit
+  -site SITE        site code, like NRMMAI
+  -product PRODUCT  product type: aggregated, hourly, velocity-hourly or
+                    gridded
+  -QC QC            for the hourly, QCed data only. Default True
+  -param PARAM      for the aggregated, parameter, like TEMP, or "velocity"
+  -weburl WEBURL    url root for the file: S3: Amazon AWS (for download,
+                    fastest), wget (AODN THREDDS, for download), opendap (AODN
+                    THREDDS to open remotely). Default opendap
+
+```
+
 ## Convert an hourly aggregated time series file into a tab-separated file with metadata on top
 
-This small script will extract varaibles from IMOS hourly aggregated netCDF file into a tab separated file, between two dates. The metadata extracted from the file global attributes is at the top. 
+This small script will extract variables from IMOS hourly aggregated netCDF file into a tab separated file, between two dates. The metadata extracted from the file global attributes is at the top. 
 The missing value for all the variables is set to -99999.
 The run will return the TSV file name, the lines corresponding the metadata and the start line of the data.
 If the date range is too big it will crash due to memory limitations.
