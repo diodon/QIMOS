@@ -107,20 +107,8 @@ def infoLTSPg(site):
     :return: tabulated printout
     """
 
-    webRoot = 'http://thredds.aodn.org.au/thredds/dodsC/'
-
-    ## get gridded-_timeseries filename
-    url = ("http://geoserver-123.aodn.org.au/geoserver/ows?typeName=moorings_all_map&SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&outputFormat=csv&CQL_FILTER=(realtime='FALSE')and(site_code='%s')" % site)
-    df = pd.read_csv(url)
-    fileName = df['url'].loc[df['url'].str.contains('gridded-timeseries')].to_string(index=False).lstrip()
-
-    if '\n' in fileName:
-        print('ERROR: more than one filename:')
-        print(fileName)
-        return
-
     fileName = getFileName(site, "G")
-    nc = xr.open_dataset(os.path.join(webRoot, fileName))
+    nc = xr.open_dataset(fileName)
     depthList = list(nc.DEPTH.values)
 
     table = list()
@@ -131,6 +119,7 @@ def infoLTSPg(site):
     table.append(['Filename for connection:', nc.source_file_opendap])
     table.append(['Location:', (str(round(np.mean([nc.geospatial_lat_max, nc.geospatial_lat_min]), 5)) + " - " +
                                         str(round(np.mean([nc.geospatial_lon_max, nc.geospatial_lon_min]), 5)))])
+    table.append(['Variables: ', list(nc.data_vars)])
     table.append(['Time coverage:', nc.time_coverage_start + ' through ' + nc.time_coverage_end])
     table.append(['Max DEPTH:', str(nc.geospatial_vertical_max)])
     table.append(['Included DEPTHS:',  ", ".join(str(x) for x in depthList)])
