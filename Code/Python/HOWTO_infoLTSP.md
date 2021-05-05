@@ -40,4 +40,29 @@ IMOS LTSP comprises five different products:
 
 -------------------------
 
+Normally, every instrument recovered from a mooring array represents an individual file in the [IMOS THREDDS server](http://thredds.aodn.org.au/thredds/catalog/IMOS/ANMN/catalog.html). This characteristic that facilitates the individual quality control and metadata handling pose some challenges for the analysis of long time series: 
+
+- Many files for one time series
+- Instruments deployed to varying depths
+- Instruments sample at different times
+- Significant work and expert knowledge required to view and analyse time series
+- Different user groups need different products (gridded density, MLD, data combined from multiple sources, plots, etc…)
+
+The hourly aggregated product is a file that aggregates all the variables from one site into one-hour bins. 
+
+The aggregated file is a netCDF 4 file organised in an [Indexed Ragged Array](http://cfconventions.org/cf-conventions/v1.6.0/cf-conventions.html#_indexed_ragged_array_representation) structure that follows the Climate-Forecast conventions and IMOS netCDF file conventions (*diagram by M. Hidas*): 
+
+![Indexed Ragged Array](./img/indexedraggedarray.png)
+
+Some characteristics of this structure:
+
+- `TIME` is no longer a dimension. That means that the ordinary selecting and plotting methods for CF netCDF are no longer available. `TIME` is one of the variables in the file.
+- the dimensions of the file are `OBSERVATION` and `INSTRUMENT`. As the aggregation process combine instruments that normally have common timestamps, the time variable could have repeated values. Also each deployment (instrument) is identified by and index and the compound instrument name, make, serial. In this way it is easy to filter according to specific instruments.
+
+
+The aggregation takes the variable values half an hour before the hour and half an hour after the hour and reduce the variable values by calculating the mean or the median. Additional variables resulting from the aggregation process are also available in the file, as ancillary variables.
+
+![hourly aggregation](./img/BurstAveraging.png)
+
+
 
