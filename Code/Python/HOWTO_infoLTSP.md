@@ -24,6 +24,8 @@ This guide shows how to use a set of functions that allows to discover the LTSP 
 ### FILE TYPES
 
 ----------------------
+[back to TOC](#TOC)  
+
 IMOS LTSP comprises five different products: 
 
 - Non-velocity products (exclude all velocity related parameters):
@@ -39,6 +41,8 @@ IMOS LTSP comprises five different products:
 ### FILE FORMAT 
 
 -------------------------
+[back to TOC](#TOC)  
+
 
 Normally, every instrument recovered from a mooring array represents an individual file in the [IMOS THREDDS server](http://thredds.aodn.org.au/thredds/catalog/IMOS/ANMN/catalog.html). This characteristic that facilitates the individual quality control and metadata handling pose some challenges for the analysis of long time series: 
 
@@ -66,6 +70,9 @@ The aggregation takes the variable values half an hour before the hour and half 
 
 <a name="THREE"></a>
 ### GETTING THE FILE NAME
+
+------------------------
+[back to TOC](#TOC)  
 
 One of the characteristics of the IMOS file naming convention is that the creation date is part of the file name. That means that every time the IMOS-AODN automatic pipeline produces a new aggregated file for a site, the old file will be replaced by a new one with **a different name**. This could represent a challenge to access the file programatically, and normally you need to go to the AODN THREDDS server and look for the new file name. 
 
@@ -125,6 +132,10 @@ http://thredds.aodn.org.au/thredds/dodsC/IMOS/ANMN/NRS/NRSKAI/gridded_timeseries
 
 <a name="FOUR"></a>
 ### INFO FROM **HOURLY** LTSP
+
+-----------------------------
+[back to TOC](#TOC)  
+
 
 As it was mentioned before, the hourly aggregated product contains all the variables (non-velocity or velocity) from all the instruments from one site. Normally, those files are much smaller than the aggregaged files, as the variables have been summarised into one hour time bins. However, it would be useful to obtain the metadata of the file as well as the variables that contains. The function `infoLTSPh` will return a summary of the hourly file. The function is available in the infoLTSP.py file:
 
@@ -209,6 +220,10 @@ in this case, the block plot shows approximately, where the data from the instru
 
 <a name="FIVE"></a>
 ### INFO FROM **GRIDDED** LTSP
+
+--------------------------------
+[back to TOC](#TOC)  
+
 
 The gridded product is arranged in a more conventional rectamgular way, having `TIME` and `DEPTH` as dimensions. That means that all the methods applied to these dimensions should work seamless. 
 
