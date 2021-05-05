@@ -56,7 +56,7 @@ The hourly aggregated product is a file that aggregates all the variables from o
 
 The aggregated file is a netCDF 4 file organised in an [Indexed Ragged Array](http://cfconventions.org/cf-conventions/v1.6.0/cf-conventions.html#_indexed_ragged_array_representation) structure that follows the Climate-Forecast conventions and IMOS netCDF file conventions (*diagram by M. Hidas*): 
 
-![Indexed Ragged Array](./img/indexedraggedarray.png)
+![Indexed Ragged Array](imgndexedraggedarray.png)
 
 Some characteristics of this structure:
 
@@ -66,7 +66,7 @@ Some characteristics of this structure:
 
 The aggregation takes the variable values half an hour before the hour and half an hour after the hour and reduce the variable values by calculating the mean or the median. Additional variables resulting from the aggregation process are also available in the file, as ancillary variables.
 
-![hourly aggregation](./img/BurstAveraging.png)
+![hourly aggregation](imgurstAveraging.png)
 
 <a name="THREE"></a>
 ### GETTING THE FILE NAME
