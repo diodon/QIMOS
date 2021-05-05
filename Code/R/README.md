@@ -1,4 +1,4 @@
-# R Tools for gridded products
+# R Tools for IMOS products and other data sources
 
 this is a set of functions to extract data and information from AODN ANMN temperature gridded product.
 
