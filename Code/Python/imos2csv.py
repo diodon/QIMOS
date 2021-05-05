@@ -11,13 +11,13 @@ import numpy as np
 def imos2csv(fileName, param, startDate, endDate, output_path='./'):
     '''
     Extract variables from hourly aggregated LTSP between two dates
-    and save it ina csv file with metadata on top
+    and save it in a tsv file with metadata on top
     E. Klein. eklein at ocean-analytics.com.au
     :param fileName: name of the hourly aggregate netCDF file
     :param param: list of parameter to extract
     :param startDate: start date YYYY-MM-DD
     :param endDate: end date YYYY-MM-DD
-    :param output_path: path where to wrtie the resulting file
+    :param output_path: path where to write the resulting file
     :return:
     '''
 
