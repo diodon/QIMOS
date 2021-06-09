@@ -1,4 +1,4 @@
-# getDHW funtion
+# getDHWmax funtion
 
 This function will extract the MMM and the DHW maximum values for years 1985-2020. It is restricted to the Great Barrier Reef area.
 
