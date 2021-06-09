@@ -6,7 +6,7 @@ It needs the MMM.nc and DHWGBR_all.nc located in the same directory of the funct
 
 ## Call: 
 
-`getMMM(lat, lon)`
+`getMMM(lat, lon, yMin, yMax)`
 
 
 ## Arguments: 
