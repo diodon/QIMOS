@@ -1,4 +1,4 @@
-# getMMM funtion
+# getDHW funtion
 
 This function will extract the MMM and the DHW maximum values for years 1985-2020. It is restricted to the Great Barrier Reef area.
 
@@ -11,8 +11,9 @@ It needs the MMM.nc and DHWGBR_all.nc located in the same directory of the funct
 
 ## Arguments: 
 
-*`lat`* = vector of latitudes, in decimalk degrees (negative)  
-*`lon`* = vector of longitudes in decimal degrees  
+`lat` = vector of latitudes, in decimalk degrees (negative)  
+`lon` = vector of longitudes in decimal degrees  
+`yMin`, `yMax` = range of year to extract the DHWmax. Default 1985-2020.
 
 It returns a named list with MMM as numeric and DHWmax as a dataframe with year and its corresponding DHWmax
 
