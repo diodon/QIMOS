@@ -1,6 +1,27 @@
-# Python tools for extracting TEMP timeseries form gridded product
+# Python tools for AODN ANMN files
 
-Set of functions to extract information and data from AODN ANMN gridded product
+Set of functions to extract information and data from AODN ANMN products
+
+
+## Explore AODN Velocity or Temperature files
+
+Discover the individual files (velocity or temperature) from one ANMN site. Get basic metadata and optionally save the list of file names
+
+
+`exploreMooring.py`
+
+``` 
+usage: exploreMooring.py [-h] -site SITE -param PARAM
+
+Explore velocity or temperature AODN individual files
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -site SITE    site code, like NRMMAI
+  -param PARAM  parameter, like V for velocity, T temperature
+
+```
+
 
 ## Get gridded LTSP information
 
