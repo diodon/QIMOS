@@ -8,6 +8,8 @@ import sys
 from datetime import date, datetime
 from itertools import groupby
 import argparse
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -23,6 +25,22 @@ def args():
     vargs = parser.parse_args()
     return(vargs)
 
+def splitStr(valueList, nchar=80):
+    '''
+    Cut the string at nchar lenght, inserting new lines after comma
+    :param valueList: list of values to join
+    :param nchar: length of the line
+    :return: string
+    '''
+    ss = valueList[0]
+    lineLen = nchar
+    for item in valueList[1:]:
+        if len(ss) >= lineLen:
+            ss = ", ".join([ss] + ["\n" + item])
+            lineLen += nchar
+        else:
+            ss = ", ".join([ss] + [item])
+    return(ss)
 
 
 def getFileName(site, param=None):
@@ -76,9 +94,17 @@ def getFileName(site, param=None):
 
     selectedFile = -1
     while selectedFile > len(table) or selectedFile < 0:
-        selectedFile = input("Select file number (or 'e' to exit): ")
+        selectedFile = input("Select file number ('s' to save the list or 'e' to exit): ")
         if selectedFile == 'e':
             print("EXIT")
+            sys.exit()
+        elif selectedFile == 's':
+            outDF = pd.DataFrame(table, columns=["Deployment", "Instrument", "Depth", "Start Date", "End Date", "Creation Date"], index=None)
+            outDF['Filename'] = fileList
+            outDF = outDF[['Filename', "Deployment", "Instrument", "Depth", "Start Date", "End Date", "Creation Date"]]
+            outFilename = site + "_" + param + "_filelist.csv"
+            outDF.to_csv(outFilename, index=False)
+            print('File list and attributes saved to', outFilename)
             sys.exit()
         else:
             selectedFile = int(selectedFile)
@@ -91,7 +117,7 @@ def getFileName(site, param=None):
 
 
 
-def exploreMooring(fileName):
+def exploreMooring(fileName, makePlot=False):
     '''
     Explore AODN selected file. TEMP or Velocity only
     :param fileName: openDAP url
@@ -102,14 +128,67 @@ def exploreMooring(fileName):
     print("File: {}".format(fileName))
     table = []
     with xr.open_dataset(fileName) as nc:
+
+        # ## convert HEIGHT_ABOVE_SENSOR to DEPTH
+        # if nc['HEIGHT_ABOVE_SENSOR'].positive =='up':
+        #     nc['HEIGHT_ABOVE_SENSOR'] = nc.instrument_nominal_depth - nc['HEIGHT_ABOVE_SENSOR']
+        # else:
+        #     nc['HEIGHT_ABOVE_SENSOR'] = nc.instrument_nominal_depth + nc['HEIGHT_ABOVE_SENSOR']
+
+
         table.append(["Title:", nc.title])
         table.append(["Site code:", nc.site_code])
         table.append(["Deployment code:", nc.deployment_code])
+        table.append(["Start Date:", nc.time_deployment_start])
+        table.append(["End Data:", nc.time_deployment_end])
         table.append(["Instrument:", nc.instrument])
         table.append(["Instrument S/N:", nc.instrument_serial_number])
         table.append(["Instrument sampling interval", nc.instrument_sample_interval])
+        table.append(["Instrument Nominal Depth:", nc.instrument_nominal_depth])
 
-    print(tabulate(table))
+        cellDepths = splitStr(list(nc['HEIGHT_ABOVE_SENSOR'].values.astype(str)))
+        table.append(['Cell depths Above Sensor:', cellDepths])
+
+        dataVars = nc.data_vars
+        dataVars = splitStr([item for item in dataVars if "quality_control" not in item])
+        table.append(["Data Variables:", dataVars])
+
+
+        print(tabulate(table))
+
+
+        if makePlot:
+
+            plotWidth = 10
+            plotHeight = 6
+            nRows = len(nc.HEIGHT_ABOVE_SENSOR)
+            nc.UCUR.plot(col="HEIGHT_ABOVE_SENSOR", col_wrap=1, figsize=(plotHeight*nRows, plotWidth))
+
+            fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, figsize=(14,11))
+            nc.UCUR.T.plot(ax=ax1)
+            ax1.invert_yaxis()
+            axes.get_legend().remove()
+
+            plt.title(nc.site_code)
+            plt.xlabel("")
+            plt.ylabel("")
+            nc.VCUR.T.plot(ax=axes[1])
+            plt.gca().invert_yaxis()
+            plt.title("")
+            plt.xlabel("")
+            plt.ylabel("DEPTH (m)")
+            nc.WCUR.T.plot(ax=axes[2])
+            plt.gca().invert_yaxis()
+            plt.title("")
+            plt.xlabel("")
+            plt.ylabel("")
+            plt.show()
+            # nc.T.plot(yincrease=False, robust=True, figsize=(11,7), aspect=1.6, add_labels=False,
+            #           cbar_kwargs={
+            #               "orientation": "horizontal",
+            #               "label": nc.UCUR.standard_name + " (" + nc.UCUR.units + ")",
+            #               "pad": 0.2,
+            #           })
 
     return
 
