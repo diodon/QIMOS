@@ -96,6 +96,10 @@ Do this for all the packages listed above. You can check now the installed packa
 
 You can continue to install new packages as needed. Remember that the packages will live inside your environment. Once you desactivate it, you won't be able to use it.
 
+You may also want to install ipython inside your environment. This application is already installed system-wide, and you can invoque it with your environment activated, but it may fail when trying to find some packages (if you run it without installing it, you will receive a warning message). To install ipython type: 
+
+   `pip install ipython`
+
 
 
 ## Test python and packages
@@ -104,7 +108,9 @@ Currently, the version of python installed in our machine is 3.8.10. To invoque 
 
    `python3`
 
-The number 3 in necessary to make a distinction with pyton 2.7, which is also available in the system. You should have something similar to this in your terminal: 
+(or `ipython` if you want to use it).
+
+The number 3 may be necessary to make a distinction with python 2.7, which is also available in the system. You should have something similar to this in your terminal: 
 
 ```
 Python 3.8.10 (default, Jun  2 2021, 10:49:15) 
@@ -113,11 +119,11 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-Let's now have a look to one of the mooring files. You will open a connection to a file stored in the [AODN THREDDS server](http://thredds.aodn.org.au/thredds/catalog/IMOS/catalog.html). This will not download the file. Only when you request the data, the specific data will be downloaded. You will use the `xarray `package. Follow these steps: 
+Now, let's have a look to one of the mooring files. You will open a connection to a file distributed by the [AODN THREDDS server](http://thredds.aodn.org.au/thredds/catalog/IMOS/catalog.html). This will not download the file (so no disk space will be used!). Only when you request the data, the specific data will be loaded into the memory. You will use the `xarray `package. Follow these steps: 
 
 1. load the xarray package: `import xarray as xr`
 2. open a connection with a file. This is temperature file from GBRCCH mooring array: `nc = xr.open_dataset('http://thredds.aodn.org.au/thredds/dodsC/IMOS/ANMN/QLD/GBRCCH/Temperature/IMOS_ANMN-QLD_TZ_20200615T010500Z_GBRCCH_FV01_GBRCCH-2006-SBE39-43_END-20201215T005000Z_C-20210202T032709Z.nc')`
-3. The file is now linked to the `nc` variable. To have a look at the variables and attributes just `print(nc)`:
+3. The file is now linked to the `nc` variable. To have a look at the variables and attributes just type `print(nc)`:
 
 ```
 print(nc)
@@ -182,8 +188,8 @@ Attributes: (12/56)
 
 You will see the already familiar structure of the file.
 
-4. to look at the dimensions of this dataset, `nc.dims`. To look at the coordinates, `nc.coords`, nad to see the names of the data variables, `nc.data_vars`
-5. To retrieve the global attributes, `nc.attrs` (it is a python dictionary). To read any global attribute, for example `time_coverage_start` type: `nc.time_coverage_start`. Or a variable attribute, like `standard_name`: `nc.TEMP.standard_name`. You probably agree that this is way more friendly than the standard netCDF package.
+4. to look at the dimensions of this dataset, `nc.dims`. To look at the coordinates, `nc.coords`, and to see the names of the data variables, `nc.data_vars`
+5. To retrieve the global attributes, `nc.attrs` (it is a python dictionary). To read any global attribute, for example `time_coverage_start` type: `nc.time_coverage_start`. Or a variable attribute, like `standard_name`: `nc.TEMP.standard_name`. You probably agree that this is way more friendly than the standard netCDF package. There is a [short tutorial](https://xarray-contrib.github.io/xarray-tutorial/oceanhackweek-2020/xarray-oceanhackweek20.html) on how to use the `xarray` package
 6. to close the connection with the file, `nc.close()`
 7. to quit python, type `quit()` or `ctrl-d`
 
