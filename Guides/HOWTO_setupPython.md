@@ -284,7 +284,7 @@ optional arguments:
   -param PARAM  parameter, like V for velocity, T temperature
 ```
 
-If you find any bug in any of the scripts, or have comment, please open an issue in the GitHub repository. If you have any questions, please [write me](email:e.klein@aims.gov.au) or better, promote the discussion inside the group!
+If you find any bug in any of the scripts, or have comment, please open an issue in the GitHub repository. If you have any questions, please [write me](mailto:e.klein@aims.gov.au) or better, promote the discussion inside the group!
 
 We will continue to develop the Ocean Observer repository, and your contributions will be very much welcome.
 
