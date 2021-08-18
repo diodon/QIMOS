@@ -211,7 +211,7 @@ you will end with a *QIMOS-main* directory which is a copy of the full GitHub re
 
 
 
-## Try somo of the tools
+## Try some tools
 
 Go to `QIMOS-main/Code/Python` directory. We will run the tool `exploreMooring.py`. This short script will present you with a list of files from one ANMN site (velocity or temperature) and allows you to select one of the files to retrieve a some of its basic attributes. You could also download the full list of names in case you need to use them in your programs. To run the script (remember to have your environment activated!)
 
