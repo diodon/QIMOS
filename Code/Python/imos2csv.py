@@ -59,7 +59,7 @@ def imos2csv(fileName, param, startDate, endDate, output_path='./'):
         df['instrument_id'] = df['instrument_id'].str.decode('utf-8')
         df.to_csv(fileNameCSV, sep='\t', index=False, mode='a')
 
-    return [fileNameCSV, len(metadata)]
+    return [fileNameCSV, len(metadata), len(df)]
 
 
 if __name__ == "__main__":
@@ -77,6 +77,9 @@ if __name__ == "__main__":
     print('TSV file name: ' + result[0])
     print('metadata from line 1 thru line ' + str(result[1]))
     print('data start at line ' + str(result[1]+1))
+    print('total number of data records: ' + str(result[2]))
+    
+
 
 
 
