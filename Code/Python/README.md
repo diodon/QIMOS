@@ -145,7 +145,7 @@ optional arguments:
 
 ## Extract one variable from hourly LTSP 
 
-This function will extract one variable (e.g. TEMP) from the ragged array structured hourly LTPS and returns a netCDF file with NOMINAL_DEPTH and TIME as dimensions in a rectangular array.  TO run the function, call it from a python script with the following arguments: 
+This function will extract one variable (e.g. TEMP) from the ragged array structured hourly LTPS and returns a netCDF file with NOMINAL_DEPTH and TIME as dimensions in a rectangular array.  The attributes of the original file are preserved and updated. To run the function, call it from a python script with the following arguments: 
 
 `extractVariable.py`
 
@@ -158,3 +158,61 @@ getVariable(fileName, varname):
     :return: netCDF dataset
 ```
 
+Example: 
+
+```buildoutcfg
+ds = getVariable('http://thredds.aodn.org.au/thredds/dodsC/IMOS/ANMN/QLD/PIL050/hourly_timeseries/IMOS_ANMN-QLD_BOSTZ_20120221_PIL050_FV02_hourly-timeseries_END-20140816_C-20210428.nc', 'TEMP')
+
+print(ds)
+<xarray.Dataset>
+Dimensions:        (NOMINAL_DEPTH: 16, TIME: 21771)
+Coordinates:
+  * NOMINAL_DEPTH  (NOMINAL_DEPTH) float32 17.0 23.0 24.8 ... 49.8 51.0 54.0
+  * TIME           (TIME) datetime64[ns] 2012-02-21T04:00:00 ... 2014-08-16T0...
+Data variables:
+    TEMP           (NOMINAL_DEPTH, TIME) float64 30.21 30.22 30.1 ... nan nan
+    DEPTH          (NOMINAL_DEPTH, TIME) float64 17.54 17.05 16.52 ... nan nan
+Attributes:
+    Conventions:                 CF-1.6,IMOS-1.4
+    abstract:                    Hourly Time Series Product: This file contai...
+    acknowledgement:             Any users of IMOS data are required to clear...
+    author:                      Klein, Eduardo
+    author_email:                e.klein@aims.gov.au
+    citation:                    The citation in a list of references is: "IM...
+    contributor_email:           adc@aims.gov.au; c.steinberg@aims.gov.au
+    contributor_name:            Australian Institute of Marine Science; AIMS...
+    contributor_role:            author; principal_investigator
+    data_centre:                 Australian Ocean Data Network (AODN)
+    data_centre_email:           info@aodn.org.au
+    date_created:                2021-08-24T19:59:36
+    disclaimer:                  Data, products and services from IMOS are pr...
+    featureType:                 timeSeries
+    file_version:                Level 2 - Quality Controlled Data
+    generating_code_version:     1.4.7
+    geospatial_lat_max:          -20.0544333333
+    geospatial_lat_min:          -20.0547833333
+    geospatial_lon_max:          116.4161833333
+    geospatial_lon_min:          116.4158166667
+    geospatial_vertical_max:     50.79277801513672
+    geospatial_vertical_min:     14.894384384155273
+    history:                     2021-04-28T08:29:02Z: Hourly aggregated file...
+    included_values_flagged_as:  Good_data, Probably_good_data
+    institution_references:      http://imos.org.au/facilities/aodn/
+    keywords:                    DEPTH, TEMP, HOURLY, AGGREGATED
+    keywords_vocabulary:         IMOS parameter names. See https://github.com...
+    license:                     http://creativecommons.org/licenses/by/4.0/
+    lineage:                     The variables of interest (VoI) are produced...
+    naming_authority:            IMOS
+    project:                     Integrated Marine Observing System (IMOS)
+    references:                  http://www.imos.org.au
+    rejected_files:              
+    site_code:                   PIL050
+    source:                      Mooring
+    standard_name_vocabulary:    NetCDF Climate and Forecast (CF) Metadata Co...
+    time_coverage_end:           2014-08-16T06:00:00Z
+    time_coverage_start:         2012-02-21T04:00:00Z
+    title:                       Long time series Hourly Aggregated product: ...
+    DODS.strlen:                 256
+    DODS.dimName:                string256
+
+```
