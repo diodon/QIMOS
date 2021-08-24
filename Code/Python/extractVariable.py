@@ -36,10 +36,11 @@ def getVariable(fileName, varname):
             ## update global attrs
             todayDate = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
             global_attrs = nc.attrs
-            global_attrs['author_email'] = 'e,klein@aims.gov.au'
-            global_attrs['creation_date'] =
+            global_attrs['author_email'] = 'e.klein@aims.gov.au'
+            global_attrs['date_created'] = todayDate
+            global_attrs['keywords'] = 'DEPTH, ' + varname + ', HOURLY, AGGREGATED'
             global_attrs['history'] = global_attrs['history'] + ' ' + todayDate + \
-                                      ': Transformed into rectangular array using '
+                                      ': Transformed into rectangular array using https://github.com/diodon/QIMOS/blob/main/Code/Python/extractVariable.py'
 
 
 
@@ -48,10 +49,14 @@ def getVariable(fileName, varname):
         dateEnd = max(time) + np.timedelta64(1, "h")
         timeSeq = np.arange(dateStart, dateEnd, dtype='datetime64[h]')
 
-        ndInc = 0.1
-        ndStart = min(nominalDepth)
-        ndEnd = max(nominalDepth) + ndInc
-        ndSeq = np.arange(ndStart, ndEnd, 0.1)
+        ndSeq = np.unique(nominalDepth)
+
+        ## uncomment to produce equally spaced depths
+        # ndInc = 0.1
+        # ndStart = min(nominalDepth)
+        # ndEnd = max(nominalDepth) + ndInc
+        # ndSeq = np.arange(ndStart, ndEnd, 0.1)
+
 
         param_fullMat = np.full([len(ndSeq), len(timeSeq)], np.nan)
         depth_fullMat = np.full([len(ndSeq), len(timeSeq)], np.nan)
@@ -64,7 +69,6 @@ def getVariable(fileName, varname):
 
             timeIdx = (np.searchsorted(timeSeq, timeMasked))
             nominaldepthIdx = (np.searchsorted(ndSeq, nominalDepth[i]))
-            print(i, instrument, nominaldepthIdx, timeIdx[0], timeIdx[-1])
             param_fullMat[nominaldepthIdx, timeIdx] = paramMasked
             depth_fullMat[nominaldepthIdx, timeIdx] = depthMasked
 
@@ -77,6 +81,7 @@ def getVariable(fileName, varname):
         param_DS = xr.Dataset({varname: param_DA, 'DEPTH': depth_DA},
                               attrs=global_attrs)
 
+        return param_DS
     except:
         print("ERROR: bad file name, or bad variable name?")
         return
