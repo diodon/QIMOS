@@ -143,3 +143,18 @@ optional arguments:
 
 ```
 
+## Extract one variable from hourly LTSP 
+
+This function will extract one variable (e.g. TEMP) from the ragged array structured hourly LTPS and returns a netCDF file with NOMINAL_DEPTH and TIME as dimensions in a rectangular array.  TO run the function, call it from a python script with the following arguments: 
+
+`extractVariable.py`
+
+```
+getVariable(fileName, varname):
+    Extract a single variable from hourly LTSP
+    E Klein 20210823
+    :param fileName: name of the LTSP hourly file
+    :param varname: nae of the variable, like TEMP
+    :return: netCDF dataset
+```
+
