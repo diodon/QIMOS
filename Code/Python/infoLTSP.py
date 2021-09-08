@@ -208,5 +208,3 @@ if __name__ == "__main__":
         infoLTSPh(vargs.site)
     else:
         print("File TYPE %s unknown. Must be G or H" % vargs.fileType)
-
-
