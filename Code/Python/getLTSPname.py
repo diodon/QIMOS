@@ -1,7 +1,7 @@
 import argparse
 import pandas as pd
 
-pd.options.display.max_colwidth = 500
+pd.set_option('display.max_colwidth', None)
 
 def args():
     parser = argparse.ArgumentParser(description="Get LTSP file name")
