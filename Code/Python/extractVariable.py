@@ -6,7 +6,7 @@ import xarray as xr
 import numpy as np
 from numpy import ma
 
-def getVariable(fileName, varname):
+def getVariable(fileName, varname, equalDepths=False):
     '''
     Extract a single variable from hourly LTSP
     E Klein 20210823
@@ -15,9 +15,9 @@ def getVariable(fileName, varname):
     :return: netCDF dataset
     '''
 
-    try:
+#    try:
         with xr.open_dataset(fileName) as nc:
-            if 'Hourly Time Series Product' not in nc.abstract:
+            if 'HOURLY' not in nc.abstract.upper():
                 print("ERROR: the file is not an hourly LTSP")
                 return
 
@@ -49,14 +49,13 @@ def getVariable(fileName, varname):
         dateEnd = max(time) + np.timedelta64(1, "h")
         timeSeq = np.arange(dateStart, dateEnd, dtype='datetime64[h]')
 
-        ndSeq = np.unique(nominalDepth)
-
-        ## uncomment to produce equally spaced depths
-        # ndInc = 0.1
-        # ndStart = min(nominalDepth)
-        # ndEnd = max(nominalDepth) + ndInc
-        # ndSeq = np.arange(ndStart, ndEnd, 0.1)
-
+        if equalDepths:
+            ndInc = 0.1
+            ndStart = min(nominalDepth)
+            ndEnd = max(nominalDepth) + ndInc
+            ndSeq = np.arange(ndStart, ndEnd, 0.1)
+        else:
+            ndSeq = np.unique(nominalDepth)
 
         param_fullMat = np.full([len(ndSeq), len(timeSeq)], np.nan)
         depth_fullMat = np.full([len(ndSeq), len(timeSeq)], np.nan)
@@ -82,9 +81,9 @@ def getVariable(fileName, varname):
                               attrs=global_attrs)
 
         return param_DS
-    except:
-        print("ERROR: bad file name, or bad variable name?")
-        return
+    # except:
+    #     print("ERROR: bad file name, or bad variable name?")
+    #     return
 
 
 
