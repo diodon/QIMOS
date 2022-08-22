@@ -61,7 +61,7 @@ The aggregated file is a netCDF 4 file organised in an [Indexed Ragged Array](ht
 Some characteristics of this structure:
 
 - `TIME` is no longer a dimension. That means that the ordinary selecting and plotting methods for CF netCDF are no longer available. `TIME` is one of the variables in the file.
-- the dimensions of the file are `OBSERVATION` and `INSTRUMENT`. As the aggregation process combine instruments that normally have common timestamps, the time variable could have repeated values. Also each deployment (instrument) is identified by and index and the compound instrument name, make, serial. In this way it is easy to filter according to specific instruments.
+- the dimensions of the file are `OBSERVATION` and `INSTRUMENT`. As the aggregation process combines instruments that could have a common timestamps, the time variable can have repeated values. Also each deployment (instrument) is identified by and index and the compound instrument name, make, serial. In this way it is easy to filter according to specific instruments.
 
 
 The aggregation takes the variable values half an hour before the hour and half an hour after the hour and reduce the variable values by calculating the mean or the median. Additional variables resulting from the aggregation process are also available in the file, as ancillary variables.
