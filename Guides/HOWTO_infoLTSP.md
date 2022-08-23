@@ -76,7 +76,7 @@ The aggregation takes the variable values half an hour before the hour and half 
 
 One of the characteristics of the IMOS file naming convention is that the creation date is part of the file name. That means that every time the IMOS-AODN automatic pipeline produces a new aggregated file for a site, the old file will be replaced by a new one with **a different name**. This could represent a challenge to access the file programatically, and normally you need to go to the AODN THREDDS server and look for the new file name. 
 
-Here is a function that helps you to discover the name of the most recent aggregated file. It requires the name of the site (`site`, like GBRCHH or NRSYON), the type of product (`fType`: 'A' aggregated, 'H' hourly, 'V' for velocity, or 'G' gridded), the `parameter` (only for fType=A, like `TEMP` or 'velocity'), and the root of the URL `webroot`: 'wget': Amazon AWS (to download, fastest), 'opendap' AODN THREDDS (to open remotely).
+[Here is a function](https://github.com/diodon/QIMOS/blob/main/Code/Python/geoserverCatalog.py) that helps you to discover the name of the most recent aggregated file. It requires the name of the site (`site`, like GBRCHH or NRSYON), the type of product (`fType`: 'A' aggregated, 'H' hourly, 'V' for velocity, or 'G' gridded), the `parameter` (only for fType=A, like `TEMP` or 'velocity'), and the root of the URL `webroot`: 'wget': Amazon AWS (to download, fastest), 'opendap' AODN THREDDS (to open remotely).
 
 It returns the file name with the appropriate web prefix
 
