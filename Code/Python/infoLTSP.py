@@ -139,7 +139,7 @@ def infoLTSPh(site, infoInst=False):
     :param infoInst: True for additional information on the instruments
     :return: tabulated printout
     """
-    FileName = getFileName(site, 'H')
+    fileName = getFileName(site, 'H')
     nc = xr.open_dataset(fileName)
     varList = list(nc.data_vars)
     varIdx = [i for i, val in enumerate(["_" in item for item in varList]) if not val]
