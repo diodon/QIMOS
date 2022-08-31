@@ -19,6 +19,8 @@ def hourly2csv(fileName):
     Convert an hourly LTSP file into a csv file.
     It will produce the same file name but with a csv extension
     and metadata in _MD.csv file
+    :author Eduardo Klein
+    :date August 2022
     :param fileName: name of the file to convert
     :return: nothing
     """
