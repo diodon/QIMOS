@@ -1,5 +1,8 @@
 ## HOW-TO: get information from LTSP files
 
+*Eduardo Klein*  
+last update: 2022-08-31
+
 <a id='TOC'></a>
 ### Table of Contents
 
