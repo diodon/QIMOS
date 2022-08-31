@@ -117,31 +117,68 @@ optional arguments:
 
 ```
 
-## Convert an hourly aggregated time series file into a tab-separated file with metadata on top
 
-This small script will extract variables from IMOS hourly aggregated netCDF file into a tab separated file, between two dates. The metadata extracted from the file global attributes is at the top. 
-The missing value for all the variables is set to -99999.
-The run will return the TSV file name, the lines corresponding the metadata and the start line of the data.
-If the date range is too big it will crash due to memory limitations.
+## Convert hourly LTSP to a csv file with accompanying metadata file
 
-`imos2csv.py`
+given the hourly aggregated file URL, the tools extract all variables and write a tabular csv file. An additional file with metadata for each instrument is also produced
+
+`hourly2csv.py`
 
 ```
-usage: imos2csv.py [-h] -file FILENAME -param PARAM [PARAM ...] -ds STARTDATE
-                   -de ENDDATE [-path OUTPUT_PATH]
+usage: hourly2csv.py [-h] -filename FILENAME
 
-Convert IMOS hourly LTSP to tab separated file with metadata on top
+Convert LSTP hourly file to CSV file
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -file FILENAME        name of hourly netCDF LTSP
-  -param PARAM [PARAM ...]
-                        parameter to extract. Default TEMP
-  -ds STARTDATE         start date in YYYY-MM-DD
-  -de ENDDATE           end date in YYYY-MM-DD
-  -path OUTPUT_PATH     path where the result file will be written. Default ./
-
+  -h, --help          show this help message and exit
+  -filename FILENAME  filename of the hourly product
 ```
+
+
+
+[//]: # (## Convert an hourly aggregated time series file into a tab-separated file with metadata on top)
+
+[//]: # ()
+[//]: # (This small script will extract variables from IMOS hourly aggregated netCDF file into a tab separated file, between two dates. The metadata extracted from the file global attributes is at the top. )
+
+[//]: # (The missing value for all the variables is set to -99999.)
+
+[//]: # (The run will return the TSV file name, the lines corresponding the metadata and the start line of the data.)
+
+[//]: # (If the date range is too big it will crash due to memory limitations.)
+
+[//]: # ()
+[//]: # (`imos2csv.py`)
+
+[//]: # ()
+[//]: # (```)
+
+[//]: # (usage: imos2csv.py [-h] -file FILENAME -param PARAM [PARAM ...] -ds STARTDATE)
+
+[//]: # (                   -de ENDDATE [-path OUTPUT_PATH])
+
+[//]: # ()
+[//]: # (Convert IMOS hourly LTSP to tab separated file with metadata on top)
+
+[//]: # ()
+[//]: # (optional arguments:)
+
+[//]: # (  -h, --help            show this help message and exit)
+
+[//]: # (  -file FILENAME        name of hourly netCDF LTSP)
+
+[//]: # (  -param PARAM [PARAM ...])
+
+[//]: # (                        parameter to extract. Default TEMP)
+
+[//]: # (  -ds STARTDATE         start date in YYYY-MM-DD)
+
+[//]: # (  -de ENDDATE           end date in YYYY-MM-DD)
+
+[//]: # (  -path OUTPUT_PATH     path where the result file will be written. Default ./)
+
+[//]: # ()
+[//]: # (```)
 
 ## Extract one variable from hourly LTSP 
 
