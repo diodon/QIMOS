@@ -276,3 +276,15 @@ Data Availability at 210.0m:  ░░░░░░░░░░░░▓▓░░�
 ```
 
 In this case, the block plot shows the data availability in the water column in the time coverage range.
+
+
+
+### For R users   
+
+--------------------
+
+If you prefer to use R to analyse the LTSP products, your best option is to convert the netCDF to a flat csv file using some python utility functions. With this, you can read the data into a data frame and use your preferred R functions for analysis. But be aware that some sites with many instruments and a long time series may result in a very big csv file.
+
+To convert an hourly product, use [hourly2csv.py](https://github.com/diodon/QIMOS/blob/main/Code/Python/hourly2csv.py). It will produce a flat csv file with an accompanying metadata file. Look at the documentation to learn how to use the function.
+
+To extract a temperature time series from the gridded product, you can use the R code [getGriddedTS.R](https://github.com/diodon/QIMOS/blob/main/Code/R/getGriddedTS.R). 
