@@ -62,9 +62,16 @@ def getFileName(site, param=None):
         print('ERROR: {0} is a wrong parameter. Must be T or V'.format(param))
         sys.exit()
 
-    url = ("http://geoserver-123.aodn.org.au/geoserver/ows?typeName=moorings_all_map&SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&outputFormat=csv&CQL_FILTER=(realtime='FALSE')and(site_code='%s')" % site)
+    url = ("http://geoserver-123.aodn.org.au/geoserver/ows?typeName=moorings_all_map&SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&outputFormat=csv&CQL_FILTER=(realtime='FALSE')")
     df = pd.read_csv(url)
-    fileList = df['url'].loc[(df[paramCheck]==True) & (df['site_code']==site) &
+    siteList = df.site_code.unique().tolist()
+    if site not in siteList:
+        print("The site code {site} is not valid. EXIT".format(site=site))
+        sys.exit()
+    else:
+        df = df[df.site_code==site]
+
+    fileList = df['url'].loc[(df[paramCheck]==True) &
                              (df['file_version']==1) &
                              ((df['data_category'] == 'Temperature') |
                               (df['data_category'] == 'Velocity'))].to_list()
@@ -117,7 +124,7 @@ def getFileName(site, param=None):
 
 
 
-def exploreMooring(fileName, makePlot=False):
+def exploreMooring(fileName, param,  makePlot=False):
     '''
     Explore AODN selected file. TEMP or Velocity only
     :param fileName: openDAP url
@@ -146,8 +153,9 @@ def exploreMooring(fileName, makePlot=False):
         table.append(["Instrument sampling interval", nc.instrument_sample_interval])
         table.append(["Instrument Nominal Depth:", nc.instrument_nominal_depth])
 
-        cellDepths = splitStr(list(nc['HEIGHT_ABOVE_SENSOR'].values.astype(str)))
-        table.append(['Cell depths Above Sensor:', cellDepths])
+        if param == 'V':
+            cellDepths = splitStr(list(nc['HEIGHT_ABOVE_SENSOR'].values.astype(str)))
+            table.append(['Cell depths Above Sensor:', cellDepths])
 
         dataVars = nc.data_vars
         dataVars = splitStr([item for item in dataVars if "quality_control" not in item])
@@ -200,7 +208,7 @@ def exploreMooring(fileName, makePlot=False):
 if __name__ == "__main__":
     vargs = args()
     fileName = getFileName(vargs.site, vargs.param)
-    exploreMooring(fileName)
+    exploreMooring(fileName, vargs.param)
 
 
 
